@@ -12,7 +12,7 @@ class ParamPOS extends Payment
      *
      * @var string
      */
-    protected $code  = 'parampos';
+    protected $code = 'parampos';
 
     public function getRedirectUrl(): string
     {

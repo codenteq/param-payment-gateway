@@ -34,7 +34,7 @@ return [
                 'validation'    => 'required',
                 'channel_based' => false,
                 'locale_based'  => true,
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

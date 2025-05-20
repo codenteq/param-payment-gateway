@@ -10,7 +10,7 @@ Install this package now to receive secure payments in your online store. Param 
 
 ## 2. Requirements:
 
-* **PHP**: 8.1 or higher.
+* **PHP**: 8.2 or higher.
 * **Bagisto**: v2.*
 * **Composer**: 1.6.5 or higher.
 
@@ -29,7 +29,11 @@ composer dump-autoload
 > WARNING <br>
 > It will check existence of the .env file, if it exists then please update the file manually with the below details.
 ```
-//
+PARAMPOS_BASE_URL=
+PARAMPOS_CLIENT_CODE=
+PARAMPOS_CLIENT_USERNAME=
+PARAMPOS_CLIENT_PASSWORD=
+PARAMPOS_GUID=
 ```
 
 - Run these commands below to complete the setup
@@ -61,7 +65,11 @@ composer dump-autoload
 > WARNING <br>
 > It will check existence of the .env file, if it exists then please update the file manually with the below details.
 ```
-//
+PARAMPOS_BASE_URL=
+PARAMPOS_CLIENT_CODE=
+PARAMPOS_CLIENT_USERNAME=
+PARAMPOS_CLIENT_PASSWORD=
+PARAMPOS_GUID=
 ```
 
 ```
