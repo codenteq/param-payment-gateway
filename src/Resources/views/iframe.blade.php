@@ -18,6 +18,6 @@
     />
 </head>
 <body>
-<iframe src="{{ $iframe_url }}" width="100%" height="600px"></iframe>
+<iframe src="{{ $iframeUrl }}" style="width: 100%; height: 100vh; border: none; margin-inline: auto;"></iframe>
 </body>
 </html>

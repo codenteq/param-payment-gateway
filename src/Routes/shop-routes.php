@@ -10,6 +10,9 @@ Route::group(['middleware' => ['web']], function () {
      */
     Route::get('/parampos-redirect', [PaymentController::class, 'redirect'])->name('parampos.redirect');
 
-    Route::post('/parampos-callback', [PaymentController::class, 'callback'])->name('parampos.callback');
+    Route::get('/parampos-success', [PaymentController::class, 'success'])->name('parampos.success');
 
+    Route::get('/parampos-cancel', [PaymentController::class, 'failure'])->name('parampos.cancel');
+
+    Route::post('/parampos-callback', [PaymentController::class, 'callback'])->name('parampos.callback');
 });

@@ -8,8 +8,6 @@ class ParamPOSServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -22,8 +20,6 @@ class ParamPOSServiceProvider extends ServiceProvider
 
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -32,17 +28,15 @@ class ParamPOSServiceProvider extends ServiceProvider
 
     /**
      * Register package config.
-     *
-     * @return void
      */
     protected function registerConfig(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/paymentmethods.php', 'payment_methods'
+            dirname(__DIR__).'/Config/paymentmethods.php', 'payment_methods'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/system.php', 'core'
+            dirname(__DIR__).'/Config/system.php', 'core'
         );
     }
 }
