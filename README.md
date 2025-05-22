@@ -36,6 +36,12 @@ PARAMPOS_CLIENT_PASSWORD=
 PARAMPOS_GUID=
 ```
 
+> WARNING <br>
+> You should only do this in an HTTPS environment.
+```
+SESSION_SAME_SITE=none
+```
+
 - Run these commands below to complete the setup
 ```
 php artisan optimize
@@ -70,6 +76,12 @@ PARAMPOS_CLIENT_CODE=
 PARAMPOS_CLIENT_USERNAME=
 PARAMPOS_CLIENT_PASSWORD=
 PARAMPOS_GUID=
+```
+
+> WARNING <br>
+> You should only do this in an HTTPS environment.
+```
+SESSION_SAME_SITE=none
 ```
 
 ```

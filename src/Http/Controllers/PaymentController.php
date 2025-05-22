@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Customer\Models\Customer;
+use Webkul\Sales\Models\OrderPayment;
 use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Transformers\OrderResource;
@@ -37,10 +38,10 @@ class PaymentController extends Controller
         $cart = Cart::getCart();
         $user = Customer::find($cart->customer_id);
 
-        $terminalId = env('PARAMPOS_CLIENT_CODE');
-        $username = env('PARAMPOS_CLIENT_USERNAME');
-        $password = env('PARAMPOS_CLIENT_PASSWORD');
-        $guid = env('PARAMPOS_GUID');
+        $terminalId = env('PARAMPOS_CLIENT_CODE', 'null');
+        $username = env('PARAMPOS_CLIENT_USERNAME', 'null');
+        $password = env('PARAMPOS_CLIENT_PASSWORD', 'null');
+        $guid = env('PARAMPOS_GUID', 'null');
         $gsm = $user->phone;
         $amount = number_format($cart->grand_total, 2, ',', '');
         $orderId = rand();
@@ -74,7 +75,7 @@ XML;
 
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL            => env('PARAMPOS_BASE_URL').'?op=TP_Modal_Payment',
+            CURLOPT_URL            => env('PARAMPOS_BASE_URL', null).'?op=TP_Modal_Payment',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $xml,
@@ -120,13 +121,18 @@ XML;
      */
     public function callback(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $status = $request->input('Sonuc');
+        $status = $request->input('TURKPOS_RETVAL_Sonuc');
+
+        $paymentOrderId = $request->input('TURKPOS_RETVAL_Siparis_ID');
 
         if ($status === '1') {
+            session(['payment_order_id' => $paymentOrderId]);
+
             return redirect()->route('parampos.success');
+        } else {
+            return redirect()->route('parampos.cancel');
         }
 
-        return redirect()->route('parampos.cancel');
     }
 
     /**
@@ -141,6 +147,8 @@ XML;
         $data = (new OrderResource($cart))->jsonSerialize();
 
         $order = $this->orderRepository->create($data);
+
+        $this->savePaymentOrderId($order['id']);
 
         if ($order->canInvoice()) {
             $this->invoiceRepository->create($this->prepareInvoiceData($order));
@@ -178,5 +186,13 @@ XML;
         }
 
         return $invoiceData;
+    }
+
+    /**
+     * Saves the payment transaction ID to the database.
+     */
+    protected function savePaymentOrderId(int $orderId): void
+    {
+        OrderPayment::where('order_id', $orderId)->update(['additional' => session('payment_order_id')]);
     }
 }

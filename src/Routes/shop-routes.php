@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Webkul\ParamPOS\Http\Controllers\PaymentController;
 
@@ -14,5 +15,6 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/parampos-cancel', [PaymentController::class, 'failure'])->name('parampos.cancel');
 
-    Route::post('/parampos-callback', [PaymentController::class, 'callback'])->name('parampos.callback');
+    Route::post('/parampos-callback', [PaymentController::class, 'callback'])->name('parampos.callback')
+        ->withoutMiddleware([VerifyCsrfToken::class]);
 });

@@ -16,6 +16,8 @@ class ParamPOSServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'parampos');
 
         $this->loadViewsFrom(__DIR__.'/../Resources/views', 'parampos');
+
+        $this->app->register(EventServiceProvider::class);
     }
 
     /**
