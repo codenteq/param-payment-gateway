@@ -21,19 +21,9 @@ Install this package now to receive secure payments in your online store. Param 
 composer require codenteq/param-payment-gateway
 ```
 
-- Run these commands below to complete the setup
+- Publish the assets using the command below
 ```
-composer dump-autoload
-```
-
-> WARNING <br>
-> It will check existence of the .env file, if it exists then please update the file manually with the below details.
-```
-PARAMPOS_BASE_URL=
-PARAMPOS_CLIENT_CODE=
-PARAMPOS_CLIENT_USERNAME=
-PARAMPOS_CLIENT_PASSWORD=
-PARAMPOS_GUID=
+php artisan vendor:publish --tag=parampos-assets
 ```
 
 > WARNING <br>
@@ -42,10 +32,10 @@ PARAMPOS_GUID=
 SESSION_SAME_SITE=none
 ```
 
-- Run these commands below to complete the setup
-```
-php artisan optimize
-```
+> WARNING <br>
+> Go to `/admin/configuration/sales/payment_methods`, find ParamPOS, and enter your Client Code, Client Username, Client Password and GUID.
+
+> That's it, now just execute the project on your specified domain.
 
 ## Installation without composer:
 
@@ -69,24 +59,13 @@ composer dump-autoload
 ```
 
 > WARNING <br>
-> It will check existence of the .env file, if it exists then please update the file manually with the below details.
-```
-PARAMPOS_BASE_URL=
-PARAMPOS_CLIENT_CODE=
-PARAMPOS_CLIENT_USERNAME=
-PARAMPOS_CLIENT_PASSWORD=
-PARAMPOS_GUID=
-```
-
-> WARNING <br>
 > You should only do this in an HTTPS environment.
 ```
 SESSION_SAME_SITE=none
 ```
 
-```
-php artisan optimize
-```
+> WARNING <br>
+> Go to `/admin/configuration/sales/payment_methods`, find ParamPOS, and enter your Client Code, Client Username, Client Password and GUID.
 
 > That's it, now just execute the project on your specified domain.
 

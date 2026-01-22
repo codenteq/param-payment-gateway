@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Customer\Models\Customer;
+use Webkul\ParamPOS\Payment\ParamPOS;
 use Webkul\Sales\Models\OrderPayment;
 use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
@@ -20,7 +21,8 @@ class PaymentController extends Controller
      */
     public function __construct(
         protected OrderRepository $orderRepository,
-        protected InvoiceRepository $invoiceRepository
+        protected InvoiceRepository $invoiceRepository,
+        protected ParamPOS $paramPOS
     ) {
         //
     }
@@ -38,10 +40,10 @@ class PaymentController extends Controller
         $cart = Cart::getCart();
         $user = Customer::find($cart->customer_id);
 
-        $terminalId = env('PARAMPOS_CLIENT_CODE', 'null');
-        $username = env('PARAMPOS_CLIENT_USERNAME', 'null');
-        $password = env('PARAMPOS_CLIENT_PASSWORD', 'null');
-        $guid = env('PARAMPOS_GUID', 'null');
+        $terminalId = $this->paramPOS->getClientCode();
+        $username = $this->paramPOS->getClientUsername();
+        $password = $this->paramPOS->getClientPassword();
+        $guid = $this->paramPOS->getGuid();
         $gsm = $user->phone;
         $amount = number_format($cart->grand_total, 2, ',', '');
         $orderId = rand();
@@ -75,7 +77,7 @@ XML;
 
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL            => env('PARAMPOS_BASE_URL', null).'?op=TP_Modal_Payment',
+            CURLOPT_URL            => $this->paramPOS->getPaymentUrl() . '?op=TP_Modal_Payment',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $xml,

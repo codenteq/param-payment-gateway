@@ -4,9 +4,21 @@ namespace Webkul\ParamPOS\Listeners;
 
 use Webkul\Admin\Listeners\Base;
 use Webkul\Admin\Mail\Order\RefundedNotification;
+use Webkul\ParamPOS\Payment\ParamPOS;
 
 class Refund extends Base
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(
+        protected ParamPOS $paramPOS
+    ) {
+        //
+    }
+
     /**
      * After order is created
      */
@@ -33,10 +45,10 @@ class Refund extends Base
         $order = $refund->order;
 
         if ($order->payment->method === 'parampos') {
-            $terminalId = env('PARAMPOS_CLIENT_CODE', 'null');
-            $username = env('PARAMPOS_CLIENT_USERNAME', 'null');
-            $password = env('PARAMPOS_CLIENT_PASSWORD', 'null');
-            $guid = env('PARAMPOS_GUID', 'null');
+            $terminalId = $this->paramPOS->getClientCode();
+            $username = $this->paramPOS->getClientUsername();
+            $password = $this->paramPOS->getClientPassword();
+            $guid = $this->paramPOS->getGuid();
 
             $orderId = $order->payment['additional'] ?? null;
             $amount = number_format($refund->grand_total, 2, '.', '');
@@ -67,7 +79,7 @@ XML;
             $ch = curl_init();
 
             curl_setopt_array($ch, [
-                CURLOPT_URL            => env('PARAMPOS_BASE_URL', 'null').'?op=TP_Islem_Iptal_Iade_Kismi2',
+                CURLOPT_URL            => $this->paramPOS->getPaymentUrl() . '?op=TP_Islem_Iptal_Iade_Kismi2',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST           => true,
                 CURLOPT_POSTFIELDS     => $xml,
