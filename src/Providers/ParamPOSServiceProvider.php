@@ -17,6 +17,8 @@ class ParamPOSServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../Resources/views', 'parampos');
 
+        $this->publishes([__DIR__ . '/../Resources/assets' => public_path('vendor/parampos')], 'parampos-assets');
+
         $this->app->register(EventServiceProvider::class);
     }
 
